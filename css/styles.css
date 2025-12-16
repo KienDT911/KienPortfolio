@@ -1,0 +1,326 @@
+/* GLOBAL RESET AND FONT */
+:root {
+    /* Updated colors to closely match the dark blue/black gradient reference image */
+    --color-white: #ffffff;
+    --color-primary: #f0f0f0; /* Near White for main text */
+    --color-secondary: #aaaaaa; /* Medium Gray for secondary text */
+    --color-dark: #000000; /* True Black for elements */
+    
+    /* BLUE ACCENTS */
+    --color-accent: #0288d1; /* Medium Dark Blue (e.g., Deep Sky Blue) */
+    --color-accent-dark: #01579b; /* Darker Blue (for button hover/lines) */
+    
+    /* GRADIENT COLORS (Deep Black/Gray to Deep Blue) */
+    --color-gradient-start: rgba(10, 10, 10, 0.95); /* Near Black */
+    --color-gradient-end: rgba(54, 54, 54, 0.9); /* Very Deep Blue/Black */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-primary);
+    background-color: var(--color-dark);
+    line-height: 1.6;
+    height: 100vh;
+    overflow: hidden; 
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--color-accent);
+}
+
+/* FULL-SCREEN BACKGROUND AND GRADIENT OVERLAY */
+.background-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: 100%;
+    /* IMPORTANT: Use your actual image here. Replace 'background.jpg' */
+    background: url('../img/Kien-black.png') no-repeat center center/cover;
+    background-size: cover; /* Ensures image covers the whole area */
+    background-position: center center; /* Centers the image content */
+    filter: brightness(-1.1) contrast(1.1); /* Optional: Slightly enhance clarity */
+    z-index: -2;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Gradient overlay using the reference colors */
+    background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
+    z-index: -1;
+}
+
+/* HEADER/NAVBAR STYLING */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+}
+
+.nav-links a {
+    text-transform: uppercase;
+    color: var(--color-secondary);
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    color: var(--color-primary);
+}
+
+.menu-icon {
+    width: 25px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.menu-icon .bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary);
+}
+
+
+/* MAIN CONTENT AND HERO SECTION */
+.content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 50px;
+    height: calc(100vh - 80px); 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 15vh;
+    position: relative;
+}
+
+.hero-left {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.vertical-line {
+    position: absolute;
+    top: 0;
+    left: -20px;
+    width: 4px;
+    height: 100%;
+    /* Accent line matching the gradient feel */
+    background: linear-gradient(to bottom, #0442c7 0%, #040f6d 100%);
+}
+
+.hero-content h1 {
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-secondary);
+    margin-bottom: 30px;
+}
+
+.contact-btn {
+    padding: 12px 30px;
+    background-color: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    letter-spacing: 1px;
+}
+
+.contact-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-dark);
+}
+
+.hero-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.slider-info {
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.current-slide {
+    color: var(--color-white);
+}
+
+.total-slides {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-secondary);
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.slider-controls {
+    display: flex;
+    gap: 15px;
+    font-size: 1.5rem;
+    color: var(--color-secondary);
+    cursor: pointer;
+}
+
+.slider-controls .control-arrow:hover {
+    color: var(--color-primary);
+}
+
+.view-profile {
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: var(--color-secondary);
+    margin-top: 10px;
+    border-bottom: 1px solid var(--color-secondary);
+}
+
+/* FOOTER WIDGETS (Bottom Content) */
+.footer-widgets {
+    display: flex;
+    justify-content: flex-start;
+    gap: 40px;
+    padding-bottom: 30px;
+}
+
+.widget {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-widget {
+    flex-basis: 20%;
+}
+
+.widget-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.social-links a {
+    margin-right: 10px;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.feed-widget {
+    flex-basis: 35%;
+}
+
+.feed-item {
+    padding-top: 5px;
+}
+
+.feed-handle {
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.feed-time {
+    font-size: 0.9rem;
+    color: var(--color-secondary);
+}
+
+.feed-text {
+    font-size: 1rem;
+    color: var(--color-secondary);
+    margin-top: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .main-nav {
+        display: none; 
+    }
+    .menu-icon {
+        display: flex; 
+    }
+    .hero-content h1 {
+        font-size: 4rem;
+    }
+    .footer-widgets {
+        flex-wrap: wrap;
+    }
+    .widget {
+        flex-basis: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        flex-direction: column;
+        padding-top: 10vh;
+    }
+    .hero-right {
+        align-items: flex-start;
+        margin-top: 30px;
+    }
+    .footer-widgets {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .widget {
+        flex-basis: 100%;
+        padding-left: 0;
+    }
+}
