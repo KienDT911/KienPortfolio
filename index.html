@@ -19,7 +19,7 @@
                 <li><a href="#">ABOUT</a></li>
                 <li><a href="#">PROJECTS</a></li>
                 <li><a href="#">BLOG</a></li>
-                <li><a href="#">CONTACT</a></li>
+                <li><a href="#contact">CONTACT</a></li>
             </ul>
         </nav>
         <div class="menu-icon">
@@ -35,7 +35,7 @@
                 <span class="vertical-line"></span>
                 <h1>Kien Dang</h1>
                 <p class="subtitle">Developer</p>
-                <button class="contact-btn">Contact</button>
+                <a href="#contact" class="contact-btn">Contact</a>
             </div>
 
             <div class="hero-right">
@@ -75,6 +75,22 @@
                 </div>
             </div>
         </section>
+        
+        <section id="contact" class="contact-section">
+            <div class="contact-container">
+                <h2>Contact</h2>
+                <p>Interested in working together? Send me a message.</p>
+                <div id="contact-success" class="contact-success" hidden></div>
+                <form id="contact-form" class="contact-form" action="#" method="post">
+                    <input type="text" name="name" placeholder="Your name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <textarea name="message" placeholder="Message" required></textarea>
+                    <button type="submit" class="contact-btn">Send</button>
+                </form>
+            </div>
+        </section>
+
+        <script src="js/main.js"></script>
     </main>
 </body>
 </html>
