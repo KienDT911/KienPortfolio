@@ -5,20 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trung Kien - Developer</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-container">
-        </div>
-    
     <header class="navbar">
-        <div class="logo">Portfolio</div>
+        <div class="logo">KD</div>
         <nav class="main-nav">
             <ul class="nav-links">
-                <li><a href="#">HOME</a></li>
-                <li><a href="#">ABOUT</a></li>
-                <li><a href="#">PROJECTS</a></li>
-                <li><a href="#">BLOG</a></li>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#projects">PROJECTS</a></li>
                 <li><a href="#contact">CONTACT</a></li>
             </ul>
         </nav>
@@ -29,68 +25,109 @@
         </div>
     </header>
 
-    <main class="content-wrapper">
-        <section class="hero-content">
-            <div class="hero-left">
-                <span class="vertical-line"></span>
-                <h1>Kien Dang</h1>
-                <p class="subtitle">Developer</p>
-                <a href="#contact" class="contact-btn">Contact</a>
+    <!-- HOME SECTION -->
+    <section id="home" class="fullpage-section hero-section">
+        <div class="section-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Kien Dang</h1>
+                <p class="hero-subtitle">Full Stack Developer</p>
+                <p class="hero-description">Crafting digital experiences with clean code and modern design</p>
+                <a href="#projects" class="cta-button">View My Work</a>
             </div>
+            <div class="scroll-indicator">
+                <span>SCROLL</span>
+                <div class="arrow-down">↓</div>
+            </div>
+        </div>
+    </section>
 
-            <div class="hero-right">
-                <div class="slider-info">
-                    <span class="current-slide">01</span> / <span class="total-slides">06</span>
-                    <div class="slider-controls">
-                        <span class="control-arrow">&lt;</span>
-                        <span class="control-arrow">|</span>
-                        <span class="control-arrow">&gt;</span>
+    <!-- ABOUT SECTION -->
+    <section id="about" class="fullpage-section about-section">
+        <div class="section-content">
+            <div class="about-header">
+                <h2>About Me</h2>
+                <div class="accent-line"></div>
+            </div>
+            <div class="about-body">
+                <p class="about-text">I'm a passionate full-stack developer with expertise in building modern, responsive web applications. I combine clean code practices with innovative design to create seamless digital experiences.</p>
+                <div class="skills-container">
+                    <div class="skill">
+                        <h3>Frontend</h3>
+                        <p>HTML, CSS, JavaScript, React</p>
+                    </div>
+                    <div class="skill">
+                        <h3>Backend</h3>
+                        <p>Node.js, Python, Express, MongoDB</p>
+                    </div>
+                    <div class="skill">
+                        <h3>Design</h3>
+                        <p>UI/UX, Responsive Design, Figma</p>
                     </div>
                 </div>
-                <a href="#" class="view-profile">View Profile</a>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="footer-widgets">
-            <div class="widget social-widget">
-                <p class="widget-label">SOCIAL</p>
-                <nav class="social-links">
-                    <a href="#">Twitter</a> |
-                    <a href="#">Dribbble</a> |
-                    <a href="#">Facebook</a>
-                </nav>
+    <!-- PROJECTS SECTION -->
+    <section id="projects" class="fullpage-section projects-section">
+        <div class="section-content">
+            <div class="projects-header">
+                <h2>Projects</h2>
+                <div class="accent-line"></div>
             </div>
-
-            <div class="widget feed-widget">
-                <div class="feed-item">
-                    <span class="feed-handle">@DESIGNMEDIUM</span> • <span class="feed-time">10 min</span>
-                    <p class="feed-text">Design a new portfolio site with DesignMedium. Live now!</p>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-number">01</div>
+                    <h3>Project Name</h3>
+                    <p>Description of your project goes here. Highlight the key features and technologies used.</p>
+                    <a href="#" class="project-link">View Project →</a>
+                </div>
+                <div class="project-card">
+                    <div class="project-number">02</div>
+                    <h3>Project Name</h3>
+                    <p>Description of your project goes here. Highlight the key features and technologies used.</p>
+                    <a href="#" class="project-link">View Project →</a>
+                </div>
+                <div class="project-card">
+                    <div class="project-number">03</div>
+                    <h3>Project Name</h3>
+                    <p>Description of your project goes here. Highlight the key features and technologies used.</p>
+                    <a href="#" class="project-link">View Project →</a>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="widget feed-widget">
-                <div class="feed-item">
-                    <span class="feed-handle">@DESIGNMEDIUM</span> • <span class="feed-time">45 min</span>
-                    <p class="feed-text">Will be starting a new design in some time. Stay tuned and don't miss out!</p>
-                </div>
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="fullpage-section contact-section">
+        <div class="section-content">
+            <div class="contact-header">
+                <h2>Get In Touch</h2>
+                <div class="accent-line"></div>
             </div>
-        </section>
-        
-        <section id="contact" class="contact-section">
-            <div class="contact-container">
-                <h2>Contact</h2>
-                <p>Interested in working together? Send me a message.</p>
-                <div id="contact-success" class="contact-success" hidden></div>
-                <form id="contact-form" class="contact-form" action="#" method="post">
-                    <input type="text" name="name" placeholder="Your name" required>
-                    <input type="email" name="email" placeholder="Email" required>
-                    <textarea name="message" placeholder="Message" required></textarea>
-                    <button type="submit" class="contact-btn">Send</button>
+            <div class="contact-body">
+                <p class="contact-intro">Let's create something amazing together</p>
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Send Message</button>
                 </form>
+                <div class="social-links">
+                    <a href="#">Twitter</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">GitHub</a>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <script src="js/main.js"></script>
-    </main>
+    <script src="js/main.js"></script>
 </body>
 </html>
