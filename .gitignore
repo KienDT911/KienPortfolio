@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Reference code and legacy projects
+ABCB_NewFrontEnd_2/
+_reference/
+_archive/
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build outputs
+*.log
+checkpoints.db
+checkpoints.db-shm
+checkpoints.db-wal

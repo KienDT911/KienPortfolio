@@ -130,6 +130,46 @@ a:hover {
     transition: all var(--transition);
 }
 
+/* ==================== BACKEND STATUS INDICATOR ==================== */
+.backend-status {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: var(--padding-section);
+    transition: all var(--transition);
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+.backend-status.connected {
+    background: var(--white);
+    border: none;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.backend-status.disconnected {
+    background: var(--black);
+    border: 2px solid var(--white);
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.backend-status.checking {
+    background: var(--medium-gray);
+    border: 1px solid var(--white);
+    animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        opacity: 0.6;
+        box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+}
+
 /* ==================== FULLPAGE SECTIONS ==================== */
 .fullpage-section {
     width: 100%;
@@ -658,3 +698,71 @@ a:hover {
         padding: 15px;
     }
 }
+
+/* ==================== CHATBOT WIDGET ==================== */
+#kb-chat-toggle {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: rgba(255,255,255,0.06);
+    color: var(--white);
+    font-size: 0;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    z-index: 110;
+    transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
+}
+#kb-chat-toggle svg { width: 24px; height: 24px; display: block; }
+#kb-chat-toggle:hover { transform: translateY(-2px); background: rgba(255,255,255,0.12); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+#kb-chat-panel {
+    position: fixed;
+    right: 20px;
+    bottom: 86px;
+    width: min(92vw, 360px);
+    height: 64vh;
+    max-height: 560px;
+    border: 1px solid var(--border-color);
+    background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 110;
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--transition), opacity var(--transition);
+}
+#kb-chat-panel.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+
+.kbc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-color);
+}
+.kbch-title { font-weight: 700; letter-spacing: 0.5px; }
+.kbch-close { background: transparent; color: var(--white); border: none; font-size: 22px; cursor: pointer; }
+
+.kbc-body { display: flex; flex-direction: column; gap: 10px; padding: 10px 12px; height: 100%; }
+#kb-chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
+
+.kb-msg { max-width: 85%; padding: 10px 12px; border-radius: 10px; font-size: 0.9rem; line-height: 1.4; white-space: pre-wrap; }
+.kb-msg.user { align-self: flex-end; background: rgba(255,255,255,0.15); }
+.kb-msg.bot { align-self: flex-start; background: rgba(255,255,255,0.07); border: 1px solid var(--border-color); }
+
+.kb-chat-input { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--border-color); }
+.kb-chat-input input { flex: 1; padding: 10px 12px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--white); border-radius: 10px; }
+.kb-chat-input input::placeholder { color: var(--medium-gray); }
+.kb-chat-input .kb-send { padding: 10px 14px; background: var(--white); color: var(--black); border: 0; border-radius: 10px; font-weight: 700; cursor: pointer; }
+
+.kb-suggestions { display: flex; flex-wrap: wrap; gap: 6px; }
+.kb-suggestion { background: transparent; border: 1px solid var(--border-color); color: var(--white); padding: 6px 10px; border-radius: 999px; font-size: 0.75rem; cursor: pointer; }

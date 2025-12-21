@@ -1,0 +1,7 @@
+flask
+flask-cors
+langgraph
+langchain
+langchain-openai
+python-dotenv
+langgraph-checkpoint-sqlite
