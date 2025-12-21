@@ -6,6 +6,24 @@ Minimal instructions to run the current code locally.
 - Python 3.11+ installed
 
 ## Start the backend (Flask)
+
+### 1. Create `.env` file (REQUIRED)
+Create a file named `.env` in the `backend/` folder with your API keys:
+```env
+OPENAI_API_KEY=your_openai_key_here
+```
+
+Optional LangSmith configuration (for debugging):
+```env
+LANGSMITH_TRACING=true
+LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+LANGSMITH_API_KEY=your_langsmith_key
+LANGSMITH_PROJECT=your_project_name
+```
+
+**Note:** The `.env` file is already in `.gitignore` and won't be committed to git.
+
+### 2. Install and run
 ```powershell
 # From repo root
 python -m venv .venv
@@ -29,8 +47,7 @@ python backend/server.py
 ### Notes
 - The server binds to `127.0.0.1:5000`; CORS in `backend/server.py` allows localhost.
 - Debug/reloader are disabled for Windows stability.
-- Keys for the LLM are currently embedded in `backend/ConversationIncluding.py` for local dev.
-- Optional: move keys to `.env` and load with `python-dotenv`.
+- API keys are loaded from `backend/.env` using `python-dotenv`.
 
 ### Common Issues
 - If Windows shows socket/reloader errors, stop any running Python processes and restart:
