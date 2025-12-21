@@ -37,6 +37,10 @@
     const panel = document.createElement('div');
     panel.id = 'kb-chat-panel';
     panel.innerHTML = `
+      <div class="resize-handle resize-tl"></div>
+      <div class="resize-handle resize-tr"></div>
+      <div class="resize-handle resize-bl"></div>
+      <div class="resize-handle resize-br"></div>
       <div class="kbc-header" role="heading" aria-level="2">
         <div class="kbch-title">AI Assistant</div>
         <button class="kbch-close" aria-label="Close chat">×</button>
@@ -62,6 +66,79 @@
     });
 
     panel.querySelector('.kbch-close')?.addEventListener('click', () => panel.classList.remove('open'));
+
+    // Add resize functionality to all corners
+    initResize(panel);
+  }
+
+  function initResize(panel) {
+    const minWidth = 280;
+    const minHeight = 300;
+    const maxWidth = window.innerWidth - 40;
+    const maxHeight = window.innerHeight - 120;
+    let isResizing = false;
+    let currentHandle = null;
+    let startX, startY, startWidth, startHeight;
+
+    const handles = panel.querySelectorAll('.resize-handle');
+    handles.forEach(handle => {
+      handle.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        currentHandle = handle;
+        startX = e.clientX;
+        startY = e.clientY;
+        
+        const rect = panel.getBoundingClientRect();
+        startWidth = rect.width;
+        startHeight = rect.height;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        document.body.style.cursor = window.getComputedStyle(handle).cursor;
+      });
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isResizing || !currentHandle) return;
+
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
+      // All resize operations grow/shrink from bottom-right anchor
+      if (currentHandle.classList.contains('resize-br')) {
+        // Bottom-right: grow right and down
+        const newWidth = Math.min(maxWidth, Math.max(minWidth, startWidth + deltaX));
+        const newHeight = Math.min(maxHeight, Math.max(minHeight, startHeight + deltaY));
+        panel.style.width = newWidth + 'px';
+        panel.style.height = newHeight + 'px';
+      } else if (currentHandle.classList.contains('resize-bl')) {
+        // Bottom-left: grow left and down (increase width by moving left)
+        const newWidth = Math.min(maxWidth, Math.max(minWidth, startWidth - deltaX));
+        const newHeight = Math.min(maxHeight, Math.max(minHeight, startHeight + deltaY));
+        panel.style.width = newWidth + 'px';
+        panel.style.height = newHeight + 'px';
+      } else if (currentHandle.classList.contains('resize-tr')) {
+        // Top-right: grow right and up (increase height by moving up)
+        const newWidth = Math.min(maxWidth, Math.max(minWidth, startWidth + deltaX));
+        const newHeight = Math.min(maxHeight, Math.max(minHeight, startHeight - deltaY));
+        panel.style.width = newWidth + 'px';
+        panel.style.height = newHeight + 'px';
+      } else if (currentHandle.classList.contains('resize-tl')) {
+        // Top-left: grow left and up (increase both by moving up-left)
+        const newWidth = Math.min(maxWidth, Math.max(minWidth, startWidth - deltaX));
+        const newHeight = Math.min(maxHeight, Math.max(minHeight, startHeight - deltaY));
+        panel.style.width = newWidth + 'px';
+        panel.style.height = newHeight + 'px';
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isResizing) {
+        isResizing = false;
+        currentHandle = null;
+        document.body.style.cursor = '';
+      }
+    });
   }
 
   async function callBackendAPI(message) {
@@ -358,6 +435,10 @@
       e.preventDefault();
       const q = (input?.value || '').trim();
       if (!q) return;
+
+      // Hide suggestions after first message
+      const suggestionsBox = document.getElementById('kb-chat-suggestions');
+      if (suggestionsBox) suggestionsBox.style.display = 'none';
 
       addMessage('user', q);
       input.value = '';
