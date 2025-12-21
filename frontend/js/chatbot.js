@@ -67,15 +67,15 @@
 
     panel.querySelector('.kbch-close')?.addEventListener('click', () => panel.classList.remove('open'));
 
-    // Add resize functionality to all corners
+    // Add resize functionality to all corners (anchored bottom-right)
     initResize(panel);
   }
 
   function initResize(panel) {
     const minWidth = 280;
-    const minHeight = 300;
-    const maxWidth = window.innerWidth - 40;
-    const maxHeight = window.innerHeight - 120;
+    const minHeight = 340; // keep input visible
+    const maxWidth = () => window.innerWidth - 40;
+    const maxHeight = () => window.innerHeight - 120;
     let isResizing = false;
     let currentHandle = null;
     let startX, startY, startWidth, startHeight;
@@ -87,11 +87,11 @@
         currentHandle = handle;
         startX = e.clientX;
         startY = e.clientY;
-        
+
         const rect = panel.getBoundingClientRect();
         startWidth = rect.width;
         startHeight = rect.height;
-        
+
         e.preventDefault();
         e.stopPropagation();
         document.body.style.cursor = window.getComputedStyle(handle).cursor;
@@ -104,29 +104,27 @@
       const deltaX = e.clientX - startX;
       const deltaY = e.clientY - startY;
 
-      // All resize operations grow/shrink from bottom-right anchor
+      const clampWidth = (w) => Math.min(maxWidth(), Math.max(minWidth, w));
+      const clampHeight = (h) => Math.min(maxHeight(), Math.max(minHeight, h));
+
       if (currentHandle.classList.contains('resize-br')) {
-        // Bottom-right: grow right and down
-        const newWidth = Math.min(maxWidth, Math.max(minWidth, startWidth + deltaX));
-        const newHeight = Math.min(maxHeight, Math.max(minHeight, startHeight + deltaY));
+        const newWidth = clampWidth(startWidth + deltaX);
+        const newHeight = clampHeight(startHeight + deltaY);
         panel.style.width = newWidth + 'px';
         panel.style.height = newHeight + 'px';
       } else if (currentHandle.classList.contains('resize-bl')) {
-        // Bottom-left: grow left and down (increase width by moving left)
-        const newWidth = Math.min(maxWidth, Math.max(minWidth, startWidth - deltaX));
-        const newHeight = Math.min(maxHeight, Math.max(minHeight, startHeight + deltaY));
+        const newWidth = clampWidth(startWidth - deltaX);
+        const newHeight = clampHeight(startHeight + deltaY);
         panel.style.width = newWidth + 'px';
         panel.style.height = newHeight + 'px';
       } else if (currentHandle.classList.contains('resize-tr')) {
-        // Top-right: grow right and up (increase height by moving up)
-        const newWidth = Math.min(maxWidth, Math.max(minWidth, startWidth + deltaX));
-        const newHeight = Math.min(maxHeight, Math.max(minHeight, startHeight - deltaY));
+        const newWidth = clampWidth(startWidth + deltaX);
+        const newHeight = clampHeight(startHeight - deltaY);
         panel.style.width = newWidth + 'px';
         panel.style.height = newHeight + 'px';
       } else if (currentHandle.classList.contains('resize-tl')) {
-        // Top-left: grow left and up (increase both by moving up-left)
-        const newWidth = Math.min(maxWidth, Math.max(minWidth, startWidth - deltaX));
-        const newHeight = Math.min(maxHeight, Math.max(minHeight, startHeight - deltaY));
+        const newWidth = clampWidth(startWidth - deltaX);
+        const newHeight = clampHeight(startHeight - deltaY);
         panel.style.width = newWidth + 'px';
         panel.style.height = newHeight + 'px';
       }
