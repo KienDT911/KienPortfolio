@@ -20,15 +20,16 @@ def chat():
         logger.info("Received chat request")
         data = request.get_json()
         user_message = data.get("message", "")
+        session_id = data.get("session_id", "default")
 
         if not user_message:
             logger.warning("Empty message received")
             return jsonify({"error": "Message is required"}), 400
 
-        logger.info(f"Processing message: {user_message[:50]}...")
+        logger.info(f"Processing message: {user_message[:50]}... [session: {session_id}]")
         
-        # Call the LangGraph chatbot logic
-        reply = stream_graph_updates(user_message)
+        # Call the LangGraph chatbot logic with session_id
+        reply = stream_graph_updates(user_message, session_id)
         logger.info(f"Generated reply: {reply[:100]}...")
         
         return jsonify({"reply": reply}), 200

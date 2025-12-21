@@ -2,6 +2,10 @@
   const API_BASE_URL = 'http://localhost:5000';
   const API_TIMEOUT = 30000; // 30 second timeout
   let isConnected = false;
+  
+  // Generate unique session ID on page load - resets on refresh
+  const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  console.log('New session started:', sessionId);
 
   // Check backend connectivity on load
   async function checkBackendHealth() {
@@ -155,7 +159,7 @@
       const response = await fetch(`${API_BASE_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, session_id: sessionId }),
         signal: controller.signal
       });
 
@@ -369,15 +373,36 @@
     return { text: answer || allDocs[top[0].i].text, sources };
   }
 
-  function addMessage(role, text, messageId = null) {
+  // Typing effect for bot messages
+  async function typeMessage(element, text, speed = 20) {
+    element.innerText = '';
+    const list = document.getElementById('kb-chat-messages');
+    
+    for (let i = 0; i < text.length; i++) {
+      element.innerText += text[i];
+      if (list) list.scrollTop = list.scrollHeight;
+      await new Promise(resolve => setTimeout(resolve, speed));
+    }
+  }
+
+  function addMessage(role, text, messageId = null, useTyping = false) {
     const list = document.getElementById('kb-chat-messages');
     if (!list) return;
     const item = document.createElement('div');
     item.className = `kb-msg ${role}`;
     item.id = messageId;
-    item.innerText = text;
-    list.appendChild(item);
-    list.scrollTop = list.scrollHeight;
+    
+    if (useTyping && role === 'bot') {
+      item.innerText = '';
+      list.appendChild(item);
+      list.scrollTop = list.scrollHeight;
+      typeMessage(item, text);
+    } else {
+      item.innerText = text;
+      list.appendChild(item);
+      list.scrollTop = list.scrollHeight;
+    }
+    
     return item;
   }
 
@@ -408,6 +433,12 @@
       'How does machine learning work?',
       'What are some fun facts?'
     ]);
+
+    // Clear any previous messages from DOM (ensures fresh start on page refresh)
+    const messageContainer = document.getElementById('kb-chat-messages');
+    if (messageContainer) {
+      messageContainer.innerHTML = '';
+    }
 
     // Welcome and check backend status
     addMessage('bot', "Hi! I'm an AI assistant. Feel free to ask me anything!");
@@ -468,8 +499,8 @@
           lastMsg.remove();
         }
         
-        // Show response
-        addMessage('bot', reply);
+        // Show response with typing effect
+        addMessage('bot', reply, null, true);
       } catch (err) {
         console.error('Error:', err);
         updateStatusIndicator('disconnected');

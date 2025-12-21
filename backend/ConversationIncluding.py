@@ -3,11 +3,10 @@ import os
 
 from typing import Annotated
 from typing_extensions import TypedDict
-from contextlib import ExitStack
 
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
-from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.checkpoint.memory import MemorySaver
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
@@ -15,23 +14,19 @@ load_dotenv()
 
 # Initialize the LLM
 llm = ChatOpenAI(
-    model="DeepSeek-V3",
+    model="DeepSeek-V3",  # or "gpt-4" if you have access
     temperature=0,
-    max_tokens=1000,
+    max_tokens=500,
     timeout=None,
     max_retries=2,
     api_key=os.getenv("OPENAI_API_KEY"),
-    base_url="https://aiportalapi.stu-platform.live/use",
+    # base_url="https://aiportalapi.stu-platform.live/use",  # Commented out - using official OpenAI
 )
 
 # No external tools are used; pure LLM assistant.
 
-# Define a memory to store the conversation
-stack = ExitStack()
-Mymemory = stack.enter_context(SqliteSaver.from_conn_string("checkpoints.db"))
-
-# Configuration for the memory saver
-config = {"configurable": {"thread_id": "1"}}
+# In-memory storage: conversation history persists during session, clears on page refresh (new session_id)
+Mymemory = MemorySaver()
 
 class State(TypedDict):
     # Messages have the type "list". The `add_messages` function
@@ -61,21 +56,27 @@ graph_builder.add_node("chatbot", chatbot)
 graph_builder.add_edge(START, "chatbot")
 graph_builder.add_edge("chatbot", END)
 
-#Compile the graph
+#Compile the graph with in-memory checkpointer (conversation history stored in RAM per session)
 graph = graph_builder.compile(checkpointer=Mymemory)
 
 #Run the graph with streaming output
-def stream_graph_updates(user_input: str) -> str:
+def stream_graph_updates(user_input: str, session_id: str = "default") -> str:
     system_prompt = (
-        "You are a helpful and friendly AI assistant. "
-        "Answer questions on any topic with accuracy, clarity, and helpfulness. "
+        "You are a helpful, polite, and professional AI assistant. "
+        "CRITICAL REQUIREMENT: NEVER use emojis, emoticons, icons, or any Unicode symbols in your responses. "
+        "Output ONLY plain text without any decorative characters. "
+        "This includes no usage of: 🍕 ♟️ 🤖 🌐 🔮 or any similar symbols. "
+        "Answer accurately and clearly using words only. "
         "Keep responses concise but informative. "
-        "Be conversational and engaging."
+        "Maintain a respectful, businesslike tone. "
+        "Remember: NO emojis or icons whatsoever in any part of your response."
     )
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_input}
     ]
+    # Use session_id as thread_id - each page refresh creates new session_id, clearing history
+    config = {"configurable": {"thread_id": session_id}}
     answer = None
     for event in graph.stream(
         {"messages": messages},
@@ -92,7 +93,6 @@ if __name__ == "__main__":
         try:
             user_input = input("User: ")
             if user_input.lower() in ["quit", "exit", "q"]:
-                stack.close()
                 print("Goodbye!")
                 break
             print("Assistant:", stream_graph_updates(user_input))
