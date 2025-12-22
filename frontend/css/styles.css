@@ -766,7 +766,15 @@ a:hover {
 }
 
 .kbc-body { display: flex; flex-direction: column; gap: 10px; padding: 10px 12px; height: 100%; min-height: 0; }
-#kb-chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; min-height: 0; }
+#kb-chat-messages { 
+    flex: 1; 
+    overflow-y: auto; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    padding-right: 4px; 
+    min-height: 0;
+}
 .kbch-title { font-weight: 700; letter-spacing: 0.5px; }
 .kbch-close { background: transparent; color: var(--white); border: none; font-size: 22px; cursor: pointer; }
 

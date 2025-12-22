@@ -71,6 +71,28 @@
 
     panel.querySelector('.kbch-close')?.addEventListener('click', () => panel.classList.remove('open'));
 
+    // Prevent page scrolling when mouse is inside chatbox
+    panel.addEventListener('wheel', (e) => {
+      const messagesContainer = document.getElementById('kb-chat-messages');
+      if (messagesContainer) {
+        const hasScroll = messagesContainer.scrollHeight > messagesContainer.clientHeight;
+        const isAtTop = messagesContainer.scrollTop === 0;
+        const isAtBottom = messagesContainer.scrollTop + messagesContainer.clientHeight >= messagesContainer.scrollHeight;
+        
+        // Prevent page scroll in all cases when mouse is inside chatbox
+        if (hasScroll) {
+          // If content is scrollable, only prevent if not at boundary or scrolling into content
+          if ((e.deltaY < 0 && !isAtTop) || (e.deltaY > 0 && !isAtBottom)) {
+            e.stopPropagation();
+          }
+        } else {
+          // If no scrollable content, always prevent page scroll
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }
+    }, { passive: false });
+
     // Add resize functionality to all corners (anchored bottom-right)
     initResize(panel);
   }
