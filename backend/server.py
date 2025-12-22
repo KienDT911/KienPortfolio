@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Allow requests from frontend (adjust origin if needed)
-CORS(app, origins=["http://localhost:3000", "http://localhost:5173", "http://localhost:8080", "http://127.0.0.1:*"])
+CORS(app, origins=["http://localhost:8000", "http://127.0.0.1:8000", "http://localhost:3000", "http://localhost:5173", "http://localhost:8080", "http://127.0.0.1:*"])
 
 @app.route("/chat", methods=["POST"])
 def chat():

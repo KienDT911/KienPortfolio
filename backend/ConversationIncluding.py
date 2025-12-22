@@ -12,15 +12,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Initialize the LLM
+# Initialize the LLM with configurable model and base_url
 llm = ChatOpenAI(
-    model="DeepSeek-V3",  # or "gpt-4" if you have access
+    model=os.getenv("MODEL_NAME", "DeepSeek-V3"),  # Default to DeepSeek-V3 if not set
     temperature=0,
     max_tokens=500,
     timeout=None,
     max_retries=2,
     api_key=os.getenv("OPENAI_API_KEY"),
-    # base_url="https://aiportalapi.stu-platform.live/use",  # Commented out - using official OpenAI
+    base_url=os.getenv("BASE_URL") if os.getenv("BASE_URL") else None,  # Optional custom endpoint
 )
 
 # No external tools are used; pure LLM assistant.

@@ -8,9 +8,20 @@ Minimal instructions to run the current code locally.
 ## Start the backend (Flask)
 
 ### 1. Create `.env` file (REQUIRED)
-Create a file named `.env` in the `backend/` folder with your API keys:
+Create a file named `.env` in the `backend/` folder with your configuration:
+
 ```env
-OPENAI_API_KEY=your_openai_key_here
+# Required: Your API Key
+OPENAI_API_KEY=your_api_key_here
+
+# Required: Model to use
+# For OpenAI: gpt-3.5-turbo, gpt-4, gpt-4-turbo
+# For custom endpoints: DeepSeek-V3, etc.
+MODEL_NAME=gpt-3.5-turbo
+
+# Optional: Custom API endpoint (leave empty for official OpenAI)
+# Example: https://aiportalapi.stu-platform.live/use
+BASE_URL=
 ```
 
 Optional LangSmith configuration (for debugging):
