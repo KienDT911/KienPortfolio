@@ -35,6 +35,45 @@ LANGSMITH_PROJECT=your_project_name
 **Note:** The `.env` file is already in `.gitignore` and won't be committed to git.
 
 ### 2. Install and run
+## Deploy to Production
+
+### Backend (Render)
+- Ensure `render.yaml` is committed at the repo root.
+- Push to GitHub and create a new service on Render using "Blueprint".
+- Set environment variables in Render:
+	- `OPENAI_API_KEY`: your provider key
+	- `MODEL_NAME`: e.g., `gpt-3.5-turbo` or `DeepSeek-V3`
+	- `BASE_URL`: leave empty for OpenAI; set custom endpoint URL if using another provider
+	- `FRONTEND_ORIGIN`: your site origin, e.g., `https://www.yourdomain.com`
+- After deploy, note your backend URL, e.g., `https://portfolio-backend.onrender.com` or a custom `https://api.yourdomain.com`.
+
+### Frontend (GitHub Pages + Custom Domain)
+- The static site lives in `frontend/`. GitHub Pages serves from the repo with the existing `CNAME` file.
+- Steps:
+	1. Push to GitHub
+	2. In GitHub → Settings → Pages → Source: `Deploy from a branch`, choose root/main
+	3. Ensure `CNAME` contains your domain (e.g., `www.yourdomain.com`)
+	4. Configure DNS at your registrar:
+		 - If using `www.yourdomain.com`: add a CNAME pointing to `<yourusername>.github.io`
+		 - For apex `yourdomain.com`: add ALIAS/ANAME to GitHub Pages (or A records to GitHub IPs if registrar supports)
+
+### Point frontend to backend
+- Set the public backend URL into `frontend/js/config.js` like:
+```
+// frontend/js/config.js
+window.KB_API_BASE_URL = 'https://api.yourdomain.com';
+```
+- Alternatively, set `FRONTEND_ORIGIN` in the backend and keep `config.js` unset when testing locally.
+
+### Smoke Test
+1. Open your domain in a browser
+2. Verify the status indicator shows connected
+3. Send a message and confirm responses
+
+### Troubleshooting
+- 401 Unauthorized: Check `OPENAI_API_KEY` and provider access
+- CORS errors: Set `FRONTEND_ORIGIN` to your site origin (e.g., `https://www.yourdomain.com`)
+- Frontend still calling localhost: Ensure `frontend/js/config.js` is set and published
 ```powershell
 # From repo root
 python -m venv .venv

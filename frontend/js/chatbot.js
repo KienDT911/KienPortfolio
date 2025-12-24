@@ -1,5 +1,5 @@
 (function () {
-  const API_BASE_URL = 'http://localhost:5000';
+  const API_BASE_URL = (typeof window !== 'undefined' && window.KB_API_BASE_URL) ? window.KB_API_BASE_URL : 'http://localhost:5000';
   const API_TIMEOUT = 30000; // 30 second timeout
   let isConnected = false;
   

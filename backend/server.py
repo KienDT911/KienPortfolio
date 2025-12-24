@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import os
 from ConversationIncluding import stream_graph_updates
 import logging
 import traceback
@@ -10,8 +11,10 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-# Allow requests from frontend (adjust origin if needed)
-CORS(app, origins=["http://localhost:8000", "http://127.0.0.1:8000", "http://localhost:3000", "http://localhost:5173", "http://localhost:8080", "http://127.0.0.1:*"])
+# Allow requests from frontend (adjust origin via env FRONTEND_ORIGIN)
+# Default to permissive during deployment; set a specific origin for production hardening
+frontend_origin = os.getenv("FRONTEND_ORIGIN", "*")
+CORS(app, origins=frontend_origin)
 
 @app.route("/chat", methods=["POST"])
 def chat():
