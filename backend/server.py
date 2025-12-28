@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 from ConversationIncluding import stream_graph_updates
@@ -9,7 +9,8 @@ import traceback
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
+# Serve frontend static files
+app = Flask(__name__, static_folder='../frontend', static_url_path='/')
 
 # Allow requests from frontend (adjust origin via env FRONTEND_ORIGIN)
 # Default to permissive during deployment; set a specific origin for production hardening
@@ -47,6 +48,19 @@ def health():
     """Health check endpoint."""
     logger.info("Health check received")
     return jsonify({"status": "ok", "message": "Backend is running"}), 200
+
+@app.route('/')
+def port = int(os.getenv("PORT", 5000))
+    logger.info(f"Starting Flask server on port {port}")
+    logger.info("Make sure ConversationIncluding.py is configured correctly")
+    # Run Flask on dynamic port (for Render) or 5000 locally
+    app.run(host="0.0.0.0", port=port
+@app.route('/<path:path>')
+def serve_static(path):
+    """Serve static files (CSS, JS, images)."""
+    if os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == "__main__":
     logger.info("Starting Flask server on http://127.0.0.1:5000")
