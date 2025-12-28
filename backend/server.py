@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__, static_folder='../frontend', static_url_path='/')
 
 # Allow requests from frontend (adjust origin via env FRONTEND_ORIGIN)
-# Default to permissive during deployment; set a specific origin for production hardening
-frontend_origin = os.getenv("FRONTEND_ORIGIN", "*")
+# For separate frontend deployment, set this to the frontend domain on Render
+frontend_origin = os.getenv("FRONTEND_ORIGIN", "https://kienportfolio-frontend.onrender.com")
 CORS(app, origins=frontend_origin)
 
 @app.route("/chat", methods=["POST"])
@@ -50,11 +50,10 @@ def health():
     return jsonify({"status": "ok", "message": "Backend is running"}), 200
 
 @app.route('/')
-def port = int(os.getenv("PORT", 5000))
-    logger.info(f"Starting Flask server on port {port}")
-    logger.info("Make sure ConversationIncluding.py is configured correctly")
-    # Run Flask on dynamic port (for Render) or 5000 locally
-    app.run(host="0.0.0.0", port=port
+def serve_index():
+    """Serve frontend index.html."""
+    return send_from_directory(app.static_folder, 'index.html')
+
 @app.route('/<path:path>')
 def serve_static(path):
     """Serve static files (CSS, JS, images)."""
@@ -63,7 +62,8 @@ def serve_static(path):
     return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == "__main__":
-    logger.info("Starting Flask server on http://127.0.0.1:5000")
+    port = int(os.getenv("PORT", 5000))
+    logger.info(f"Starting Flask server on port {port}")
     logger.info("Make sure ConversationIncluding.py is configured correctly")
-    # Run Flask on port 5000
-    app.run(host="127.0.0.1", port=5000, debug=False, use_reloader=False)
+    # Run Flask on dynamic port (for Render) or 5000 locally
+    app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)

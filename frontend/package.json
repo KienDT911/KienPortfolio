@@ -1,0 +1,12 @@
+{
+  "name": "kienportfolio-frontend",
+  "version": "1.0.0",
+  "description": "Kien's Portfolio Frontend",
+  "scripts": {
+    "build": "echo 'Building frontend...'",
+    "start": "echo 'Frontend is static'"
+  },
+  "keywords": ["portfolio", "chatbot"],
+  "author": "Kien",
+  "license": "MIT"
+}
