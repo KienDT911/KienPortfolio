@@ -30,3 +30,9 @@ _archive/
 checkpoints.db
 checkpoints.db-shm
 checkpoints.db-wal
+# Executables
+*.exe
+*.exe~
+
+# OS files
+Thumbs.db
