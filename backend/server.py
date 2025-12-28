@@ -13,9 +13,10 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__, static_folder='../frontend', static_url_path='/')
 
 # Allow requests from frontend (adjust origin via env FRONTEND_ORIGIN)
-# For separate frontend deployment, set this to the frontend domain on Render
-frontend_origin = os.getenv("FRONTEND_ORIGIN", "https://kienportfolio-frontend.onrender.com")
-CORS(app, origins=frontend_origin)
+# FRONTEND_ORIGIN can be a comma-separated list of allowed origins.
+frontend_origin_env = os.getenv("FRONTEND_ORIGIN", "https://kienportfolio-frontend.onrender.com")
+frontend_origins = [o.strip() for o in frontend_origin_env.split(",") if o.strip()]
+CORS(app, origins=frontend_origins)
 
 @app.route("/chat", methods=["POST"])
 def chat():

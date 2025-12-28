@@ -14,5 +14,5 @@ services:
       - key: BASE_URL
         sync: false
       - key: FRONTEND_ORIGIN
-        value: https://kienportfolio.onrender.com
+        value: https://kienportfolio.onrender.com,https://dangtrungkien.online,https://www.dangtrungkien.online
         sync: false
